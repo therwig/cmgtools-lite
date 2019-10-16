@@ -25,8 +25,8 @@ met75_trig_CR_18	: HLT_MuMu	; Disable=True
 met125		: MET_pt > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 125 && MET_pt < 200	; Disable=True 
 mml		: ((LepGood1_pdgId*LepGood2_pdgId < 0) && (fabs(LepGood1_pdgId) == 13 && fabs(LepGood2_pdgId) == 13)) || ((LepGood1_pdgId*LepGood3_pdgId < 0) && (fabs(LepGood1_pdgId) == 13 && fabs(LepGood3_pdgId) == 13)) || ((LepGood3_pdgId*LepGood2_pdgId < 0) && (fabs(LepGood2_pdgId) == 13 && fabs(LepGood3_pdgId) == 13))	; Disable=True
 met125_trig_16	: HLT_MuMuMET16	; Disable=True
-met125_trig_17	: HLT_MuMuMET17	; Disable=True
-met125_trig_18	: HLT_MuMuMET18	; Disable=True
+met125_trig_17	: HLT_MuMuMET	; Disable=True
+met125_trig_18	: HLT_MuMuMET	; Disable=True
 met125_trig_CR_16	: HLT_MuMu16	; Disable=True
 met125_trig_CR_17	: HLT_MuMu	; Disable=True
 met125_trig_CR_18	: HLT_MuMu	; Disable=True
@@ -34,8 +34,8 @@ met125_trig_CR_18	: HLT_MuMu	; Disable=True
 met200		: MET_pt > 200 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 200	; Disable=True
 met200_CR		: MET_pt > 200 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 200	; Disable=True
 met200_trig_16	: HLT_HighMET16	; Disable=True
-met200_trig_17	: HLT_HighMET17	; Disable=True
-met200_trig_18	: HLT_HighMET18	; Disable=True
+met200_trig_17	: HLT_HighMET	; Disable=True
+met200_trig_18	: HLT_HighMET	; Disable=True
 
 
 ##### SR (enabled by default but likely to be inverted cuts)

@@ -37,8 +37,8 @@ if args.signalMasses and args.doWhat != "cards": print "Option SIGNALMASSES to b
 
 lumis = {
 '2016': '35.9', # '33.2' for low MET
-'2017': '41.53', # '36.74' for low MET
-'2018': '59.74',
+'2017': '41.5', # '36.7' for low MET
+'2018': '59.7', # '59.2' for low MET
 }
 LUMI= " -l %s "%(lumis[YEAR])
 
@@ -50,7 +50,7 @@ submit = '{command}'
 
 P0="/eos/cms/store/cmst3/group/tthlep/peruzzi/NanoTrees_SOS_230819_v5/"
 nCores = 8
-TREESALL = " --Fs {P}/recleaner -P "+P0+"%s "%(YEAR,)
+TREESALL = " --Fs {P}/recleaner --FMCs {P}/bTagWeights -P "+P0+"%s "%(YEAR,)
 
 def base(selection):
     CORE=TREESALL
@@ -75,12 +75,12 @@ def base(selection):
          
 
          if YEAR == "2016":
-             wBG = " 'puWeight' " #" 'getLepSF_16(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_16(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*triggerSFfullsim(LepGood1_pt, LepGood1_eta, LepGood2_pt, LepGood2_eta, MET_pt, metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt,LepGood2_phi, MET_pt, MET_phi))' " #bTagWeight
+             wBG = " 'puWeight*eventBTagSF' " #" 'getLepSF_16(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_16(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*triggerSFfullsim(LepGood1_pt, LepGood1_eta, LepGood2_pt, LepGood2_eta, MET_pt, metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt,LepGood2_phi, MET_pt, MET_phi))' "
              #wFS = " 'getLepSFFS(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSFFS(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*ISREwkCor*bTagWeightFS*triggerEff(LepGood1_pt, LepGood1_eta, LepGood2_pt,LepGood2_eta, MET_pt, metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi))' "
          elif YEAR == "2017": 
-             wBG = " 'puWeight' " #" 'getLepSF_17(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_17(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)' "
+             wBG = " 'puWeight*eventBTagSF' " #" 'getLepSF_17(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_17(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)' "
          elif YEAR == "2018":
-             wBG = " 'puWeight' "
+             wBG = " 'puWeight*eventBTagSF' "
          GO="%s -W %s"%(GO,wBG)
 
          if args.doWhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.52 ")
@@ -96,12 +96,12 @@ def base(selection):
         if args.doWhat in ["plots","ntuple"]: GO+=" susy-sos/3l_plots.txt "
         
         if YEAR == "2016":
-            wBG = " 'puWeight' " #" 'getLepSF_16(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_16(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*getLepSF_16(LepGood3_pt, LepGood3_eta, LepGood3_pdgId)*triggerSFfullsim3L(LepGood1_pt, LepGood1_eta, LepGood2_pt, LepGood2_eta, LepGood3_pt, LepGood3_eta, MET_pt, metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi, LepGood3_pt, LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)), lepton_permut(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId))' " #bTagWeight
+            wBG = " 'puWeight*eventBTagSF' " #" 'getLepSF_16(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_16(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*getLepSF_16(LepGood3_pt, LepGood3_eta, LepGood3_pdgId)*triggerSFfullsim3L(LepGood1_pt, LepGood1_eta, LepGood2_pt, LepGood2_eta, LepGood3_pt, LepGood3_eta, MET_pt, metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi, LepGood3_pt, LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)), lepton_permut(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId))' "
             #wFS = " 'getLepSFFS(LepGood1_pt, LepGood1_eta, LepGood1_pdgId) * getLepSFFS(LepGood2_pt, LepGood2_eta, LepGood2_pdgId) * getLepSFFS(LepGood3_pt, LepGood3_eta, LepGood3_pdgId)*ISREwkCor*bTagWeightFS * triggerEff3L(LepGood1_pt, LepGood1_eta, LepGood2_pt, LepGood2_eta, LepGood3_pt, LepGood3_eta, MET_pt, metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi, LepGood3_pt, LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)), lepton_permut(LepGood3_pdgId, LepGood3_pdgId, LepGood3_pdgId))' "
         elif YEAR == "2017":
-            wBG = " 'puWeight' " #" 'getLepSF_17(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_17(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*getLepSF_17(LepGood3_pt, LepGood3_eta, LepGood3_pdgId)' "
+            wBG = " 'puWeight*eventBTagSF' " #" 'getLepSF_17(LepGood1_pt, LepGood1_eta, LepGood1_pdgId)*getLepSF_17(LepGood2_pt, LepGood2_eta, LepGood2_pdgId)*getLepSF_17(LepGood3_pt, LepGood3_eta, LepGood3_pdgId)' "
         elif YEAR == "2018":
-             wBG = " 'puWeight' "
+             wBG = " 'puWeight*eventBTagSF' "
         GO="%s -W %s"%(GO,wBG)
 
         if args.doWhat == "plots": GO=GO.replace(LEGEND, " --legendColumns 3 --legendWidth 0.42 ")
@@ -258,8 +258,9 @@ if __name__ == '__main__':
     if args.norm: x = add(x,"--sp '.*' --scaleSigToData ")
 
     if '_low' in torun :
-        if YEAR=="2016": x = x.replace(LUMI," -l 33.2 ")
-        if YEAR=="2017": x = x.replace(LUMI," -l 36.74 ")
+        if YEAR=="2016" and "cr_wz" not in torun: x = x.replace(LUMI," -l 33.2 ")
+        if YEAR=="2017": x = x.replace(LUMI," -l 36.7 ")
+        if YEAR=="2018" and "cr_wz" not in torun: x = x.replace(LUMI," -l 59.2 ")
 
     if args.doWhat == "cards" and args.signalMasses:
         masses=args.signalMasses.rstrip('+').split('_')

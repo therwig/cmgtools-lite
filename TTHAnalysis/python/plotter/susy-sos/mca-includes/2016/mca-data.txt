@@ -1,25 +1,18 @@
 ### 2016
-data : DoubleMuon_Run2016B_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016C_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016D_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016E_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016F_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016G_1June2019	 ; years="2016"
-data : DoubleMuon_Run2016H_1June2019	 ; years="2016"
-data : MET_Run2016B_1June2019	 ; years="2016"
-data : MET_Run2016C_1June2019	 ; years="2016"
-data : MET_Run2016D_1June2019	 ; years="2016"
-data : MET_Run2016E_1June2019	 ; years="2016"
-data : MET_Run2016F_1June2019	 ; years="2016"
-data : MET_Run2016G_1June2019	 ; years="2016"
-data : MET_Run2016H_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016B_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016C_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016D_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016E_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016F_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016G_1June2019	 ; years="2016"
+#data : DoubleMuon_Run2016H_1June2019	 ; years="2016"
+#data : MET_Run2016B_1June2019	 ; years="2016"
+#data : MET_Run2016C_1June2019	 ; years="2016"
+#data : MET_Run2016D_1June2019	 ; years="2016"
+#data : MET_Run2016E_1June2019	 ; years="2016"
+#data : MET_Run2016F_1June2019	 ; years="2016"
+#data : MET_Run2016G_1June2019	 ; years="2016"
+#data : MET_Run2016H_1June2019	 ; years="2016"
 
-
-
-
-
-
-
-
-
-
+data : DoubleMuon_Run2016_1June2019	 ; years="2016"
+data : MET_Run2016_1June2019	 ; years="2016"

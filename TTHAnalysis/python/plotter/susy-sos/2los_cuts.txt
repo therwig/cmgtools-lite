@@ -22,21 +22,21 @@ minHT		: (htJet25j-LepGood1_pt-LepGood2_pt) > 100
 #xpRun2017B	: $DATA{!(run < 299330)} $MC{1}	; Disable=True # Should be enabled only in 2017 to exclude runs that don't have the low MET trigger
 met125		: MET_pt > 125 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 125 && MET_pt < 200	; Disable=True 
 met125_trig_16	: HLT_MuMuMET16	; Disable=True
-met125_trig_17	: HLT_MuMuMET17	; Disable=True
-met125_trig_18	: HLT_MuMuMET18	; Disable=True
+met125_trig_17	: HLT_MuMuMET	; Disable=True
+met125_trig_18	: HLT_MuMuMET	; Disable=True
 ### Med MET	
 met200		: MET_pt > 200 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 200 && MET_pt < 250	; Disable=True
 met200_col	: MET_pt > 200 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 200 && MET_pt < 300	; Disable=True
 met200_CR	: MET_pt > 200 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 200	; Disable=True
 met200_trig_16	: HLT_HighMET16	; Disable=True
-met200_trig_17	: HLT_HighMET17	; Disable=True
-met200_trig_18	: HLT_HighMET18	; Disable=True
+met200_trig_17	: HLT_HighMET	; Disable=True
+met200_trig_18	: HLT_HighMET	; Disable=True
 ### High MET
 met250		: MET_pt > 250 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 250	; Disable=True
 met300_col	: MET_pt > 300 && metmm_pt(LepGood1_pdgId, LepGood1_pt, LepGood1_phi, LepGood2_pdgId, LepGood2_pt, LepGood2_phi, MET_pt, MET_phi) > 300	; Disable=True
 met250_trig_16	: HLT_HighMET16	; Disable=True
-met250_trig_17	: HLT_HighMET17	; Disable=True
-met250_trig_18	: HLT_HighMET18	; Disable=True
+met250_trig_17	: HLT_HighMET	; Disable=True
+met250_trig_18	: HLT_HighMET	; Disable=True
 
 
 ##### SR (enabled by default but likely to be inverted cuts)
