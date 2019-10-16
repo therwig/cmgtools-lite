@@ -1,6 +1,6 @@
 ## TChiWZ Signal Points
 ---------------------------------------
-incl_signal	: + ; IncludeMca="susy-sos/mca-includes/2018/mca-2los-signal.txt" ; Processes="signal_TChiWZ_200_190+,signal_TChiWZ_225_210+,signal_TChiWZ_150_145+,signal_TChiWZ_150_120+"
+incl_signal	: + ; IncludeMca="susy-sos/mca-includes/2018/mca-2los-signal.txt", Processes="signal_TChiWZ_200_190+\,signal_TChiWZ_225_210+\,signal_TChiWZ_150_145+\,signal_TChiWZ_150_120+"
 
 ## Prompt tt bkg
 ---------------------------------------

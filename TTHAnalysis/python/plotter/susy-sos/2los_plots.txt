@@ -13,19 +13,19 @@ lep2pt        : LepGood2_pt                                          : 8,0,40  ;
 lep1eta       : abs(LepGood1_eta)                                    : 10,0,2.5 ; XTitle="Leading lepton #||{#eta}"       , Legend='TR', IncludeOverflows=False, MoreY=1.5
 lep2eta       : abs(LepGood2_eta)                                    : 10,0,2.5 ; XTitle="Subleading lepton #||{#eta}"    , Legend='TR', IncludeOverflows=False, MoreY=1.5
 lep1phi       : LepGood1_phi                                         : 20, -3.14, 3.14 ; XTitle="Leading lepton #phi" 
-lep2phi       : LepGood2_phi                                         : 20, -3.14, 3.14 ; XTitle="Subeading lepton #phi"
+lep2phi       : LepGood2_phi                                         : 20, -3.14, 3.14 ; XTitle="Subleading lepton #phi"
 lep1sip3d     : LepGood1_sip3d                                       : 40, 0, 8   ; XTitle="Leading lepton sip3d" 
-lep2sip3d     : LepGood2_sip3d                                       : 40, 0, 8   ; XTitle="Subeading lepton sip3d"
+lep2sip3d     : LepGood2_sip3d                                       : 40, 0, 8   ; XTitle="Subleading lepton sip3d"
 lep1ip3d     : LepGood1_ip3d                                       : 40, 0, 0.04   ; XTitle="Leading lepton ip3d" 
-lep2ip3d     : LepGood2_ip3d                                       : 40, 0, 0.04   ; XTitle="Subeading lepton ip3d"
+lep2ip3d     : LepGood2_ip3d                                       : 40, 0, 0.04   ; XTitle="Subleading lepton ip3d"
 lep1dxy       : LepGood1_dxy                                         : 10, 0, 0.01 ; XTitle="Leading lepton dxy" 
-lep2dxy       : LepGood2_dxy                                         : 10, 0, 0.01 ; XTitle="Subeading lepton dxy"
+lep2dxy       : LepGood2_dxy                                         : 10, 0, 0.01 ; XTitle="Subleading lepton dxy"
 lep1dz        : LepGood1_dz                                         : 20, 0, 0.1 ; XTitle="Leading lepton dz" 
-lep2dz        : LepGood2_dz                                          : 20, 0, 0.1 ; XTitle="Subeading lepton dz"
+lep2dz        : LepGood2_dz                                          : 20, 0, 0.1 ; XTitle="Subleading lepton dz"
 lep1relIso03  : LepGood1_pfRelIso03_all                               : 20, 0, 10 ; XTitle="Leading lepton relIso03"
-lep2relIso03  : LepGood2_pfRelIso03_all                               : 20, 0, 10 ; XTitle="Subeading lepton relIso03"
+lep2relIso03  : LepGood2_pfRelIso03_all                               : 20, 0, 10 ; XTitle="Subleading lepton relIso03"
 lep1AbsIso03  : LepGood1_pfRelIso03_all*LepGood1_pt                    : 30, 0, 60 ; XTitle="Leading lepton absIso03"
-lep2AbsIso03  : LepGood2_pfRelIso03_all*LepGood2_pt                    : 20, 0, 40 ; XTitle="Subeading lepton absIso03"
+lep2AbsIso03  : LepGood2_pfRelIso03_all*LepGood2_pt                    : 20, 0, 40 ; XTitle="Subleading lepton absIso03"
 
 #el1pt         : if3(abs(LepGood1_pdgId)==11  , LepGood1_pt      , -100) : 8,0,40  ; XTitle="Leading electron p_{T} [GeV]"   , Legend='TR', IncludeOverflows=False, LegendCutoff=1e-10
 #el2pt         : if3(abs(LepGood2_pdgId)==11  , LepGood2_pt      , -100) : 8,0,40  ; XTitle="Subleading electron p_{T} [GeV]", Legend='TR', IncludeOverflows=False, LegendCutoff=1e-10
