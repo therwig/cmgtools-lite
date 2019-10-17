@@ -243,10 +243,8 @@ if __name__ == '__main__':
         if 'cr_wz' in torun:
             x = add(x,"-X ^minMll$ -X ^ZvetoTrigger$ -X ^ledlepPt$ -X ^threeTight$ -X ^pt5sublep$ ")
             x = add(x,"-E ^CRWZlepId$ -E ^CRWZmll$ ")
-            x = x.replace('-E ^met200$','-E ^met200_CR$')
             if '_min' in torun: 
                 x = add(x,"-E ^CRWZPtLep_MuMu$ ")
-                x = x.replace('-E ^met75_trig','-E ^met75_trig_CR')
             if '_low' in torun: 
                 x = add(x,"-E ^CRWZPtLep_MuMu$ ")
                 x = x.replace('-E ^met125_trig','-E ^met125_trig_CR')
