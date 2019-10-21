@@ -24,18 +24,26 @@ class PlotFile:
         self._plots = []
         defaults = {}
         infile = open(fileName,'r')
+        iline = -1
         for line in infile:
+            iline += 1
             if re.match("\s*#.*", line) or len(line.strip())==0: continue
             while line.strip()[-1] == "\\":
                 line = line.strip()[:-1] + infile.next()
+                iline += 1
             extra = {}
             if ";" in line:
+                oldline = line
                 (line,more) = line.split(";")[:2]
                 more = more.replace("\\,",";")
                 for setting in [f.strip().replace(";",",") for f in more.split(',')]:
                     if "=" in setting: 
                         (key,val) = [f.strip() for f in setting.split("=")]
-                        extra[key] = eval(val)
+                        try:
+                            extra[key] = eval(val)
+                        except:
+                            print "ERROR at line %d of %s:\n\t%s\n" % (iline, fileName, oldline)
+                            raise
                     else: extra[setting] = True
             line = re.sub("#.*","",line) 
             field = [f.strip().replace(";",":") for f in line.replace("::",";;").replace("\\:",";").split(':')]
@@ -245,7 +253,7 @@ def doScaleSigNormData(pspec,pmap,mca):
         bkg = pmap["background"]
     else:
         bkg = sig.raw().Clone(); bkg.Reset()
-    sf = (data.Integral()-bkg.Integral())/sig.Integral()
+    sf = (data.Integral()-bkg.Integral())/sig.Integral() if sig.Integral() else 1
     signals = [ "signal" ] + mca.listSignals()
     for p,h in pmap.iteritems():
         if p in signals: h.Scale(sf)
@@ -258,9 +266,9 @@ def doScaleBkgNormData(pspec,pmap,mca,list = []):
     if any([l not in pmap for l in list]): return -1.0
     data = pmap["data"]
     bkg  = pmap["background"]
-    int = sum([pmap[l].Integral() for l in list])
-    rm = bkg.Integral() - int
-    sf = (data.Integral() - rm) / int
+    integral = sum([pmap[l].Integral() for l in list])
+    rm = bkg.Integral() - integral
+    sf = (data.Integral() - rm) / integral if integral else 0
     bkgs = ["background"] + list
     for p,h in pmap.iteritems():
         if p in bkgs: h.Scale(sf)
@@ -593,7 +601,6 @@ def doLegend(pmap,mca,corner="TR",textSize=0.035,cutoff=1e-2,cutoffSignals=True,
             (x1,y1,x2,y2) = (.2, .16 + height, .2+legWidth, .15)
 
         leg = ROOT.TLegend(x1,y1,x2,y2)
-        if header: leg.SetHeader(header.replace("\#", "#"))
         leg.SetFillColor(0)
         leg.SetShadowColor(0)
         if header: leg.SetHeader(header.replace("\#", "#"))       
