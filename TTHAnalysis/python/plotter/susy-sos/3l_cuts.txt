@@ -17,12 +17,11 @@ upsilonVeto	: !( fabs(LepGood1_pdgId) == fabs(LepGood2_pdgId) && LepGood1_pdgId*
 ##### Triggers and Binning # To be discussed
 ### Min MET
 met75		: MET_pt > 75 && MET_pt < 125	; Disable= True
-met75_trig_16	: HLT_MuMu16	; Disable=True
-met75_trig_17	: HLT_MuMu	; Disable=True
-met75_trig_18	: HLT_MuMu	; Disable=True
+met75_trig_CR_16	: HLT_MuMu16	; Disable=True
+met75_trig_CR_17	: HLT_MuMu	; Disable=True
+met75_trig_CR_18	: HLT_MuMu	; Disable=True
 ### Low MET
-#xpRun2017B	: $DATA{!(run < 299330)} $MC{1}	; Disable=True # Should be enabled only in 2017 to exclude runs that don't have the low MET trigger
-met125		: MET_pt > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 125 && MET_pt < 200	; Disable=True 
+met125		: MET_pt > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) < 200	; Disable=True
 met125_trig_16	: HLT_MuMuMET16	; Disable=True
 met125_trig_17	: HLT_MuMuMET	; Disable=True
 met125_trig_18	: HLT_MuMuMET	; Disable=True
@@ -30,7 +29,7 @@ met125_trig_CR_16	: HLT_MuMu16	; Disable=True
 met125_trig_CR_17	: HLT_MuMu	; Disable=True
 met125_trig_CR_18	: HLT_MuMu	; Disable=True
 ### Med MET
-met200		: MET_pt > 200 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 200	; Disable=True
+met200		: metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 200	; Disable=True
 met200_trig_16	: HLT_HighMET16	; Disable=True
 met200_trig_17	: HLT_HighMET	; Disable=True
 met200_trig_18	: HLT_HighMET	; Disable=True
