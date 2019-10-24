@@ -423,7 +423,16 @@ from CMGTools.TTHAnalysis.tools.nanoAOD.susySOS_modules import *
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import PostProcessor
 
 modules = susySOS_sequence_step1
-cut = susySOS_skim_cut 
+cut = susySOS_skim_cut
+# Switch to Tag and Probe skimming/sequence
+if getHeppyOption("TnP"):
+    collection = getHeppyOption("TnPCollection", "None")
+    if collection == "None":
+        raise RuntimeError("You omitted the TnP collection to run on!")
+    if collection != "Muon" and collection != "Electron":
+        raise RuntimeError("Invalid TnP collection to run on: Should be either 'Muon' or 'Electron'!")
+    modules = susySOS_sequence_TnP(year,collection)
+    cut = susySOS_TnP_cut 
 
 branchsel_in = os.environ['CMSSW_BASE']+"/src/CMGTools/TTHAnalysis/python/tools/nanoAOD/branchsel_in.txt"
 branchsel_out = None
