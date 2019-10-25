@@ -46,6 +46,7 @@ if year == 2018:
         mcSamples = byCompName(mcSamples_, [
 
 ##            "DYJetsToLL_M10to50_LO",
+            "DYJetsToLL_M50_LO", # for Tag and Probe studies
 ##            "DYJetsToLL_M50_LO_ext",
 
 
@@ -124,14 +125,17 @@ if year == 2018:
 
     if analysis == "main":
 ##        DatasetsAndTriggers.append( ("DoubleMuon", triggers["mumu_iso"] + triggers["3mu"]) )
-        DatasetsAndTriggers.append( ("DoubleMuon", triggers["SOS_doublemulowMET"] + triggers["mumu_iso"] + triggers["3mu"]) )
-        DatasetsAndTriggers.append( ("MET",     triggers["SOS_highMET"] ) )
+        DatasetsAndTriggers.append( ("DoubleMuon",  triggers["SOS_doublemulowMET"] + triggers["mumu_iso"] + triggers["3mu"]) )
+        DatasetsAndTriggers.append( ("MET",         triggers["SOS_highMET"] ) )
+        DatasetsAndTriggers.append( ("EGamma",      triggers["SOS_eleTnP"] ) )
+        DatasetsAndTriggers.append( ("SingleMuon",  triggers["SOS_muTnP"] ) )
 ##        DatasetsAndTriggers.append( ("SingleMuon", triggers["1mu_iso"]) ) ##which one?? ##PD SingleMuon o MET?
 ##conf db e cercare stream dato il nome del trigger
 
 elif year == 2017:
     mcSamples = byCompName(mcSamples_, [
-        "DYJetsToLL_M10to50_LO_ext"
+        "DYJetsToLL_M50_LO", # for Tag and Probe studies
+        "DYJetsToLL_M10to50_LO_ext,"
 ##        "DYJetsToLL_M50$", "TT(Lep|Semi)_pow", "TTHnobb_pow",
 
         ##main bkgs
@@ -211,10 +215,13 @@ elif year == 2017:
 
     DatasetsAndTriggers.append( ("DoubleMuon", triggers["SOS_doublemulowMET"] + triggers["mumu_iso"] + triggers["3mu"]) )
     DatasetsAndTriggers.append( ("MET",     triggers["SOS_highMET"] ) )
+    DatasetsAndTriggers.append( ("SingleElectron",  triggers["SOS_eleTnP"] ) )
+    DatasetsAndTriggers.append( ("SingleMuon",      triggers["SOS_muTnP"] ) )
 
 elif year == 2016:
     mcSamples = byCompName(mcSamples_, [
-        "DYJetsToLL_M10to50_LO$"
+        "DYJetsToLL_M50_LO", # for Tag and Probe studies
+        "DYJetsToLL_M10to50_LO$",
 
         ##main bkgs
         "T_tWch_noFullyHad", #extensions are to be included?
@@ -330,8 +337,10 @@ elif year == 2016:
 
 ###        "DYJetsToLL_M50$", "TT(Lep|Semi)_pow" 
     ])
-    DatasetsAndTriggers.append( ("DoubleMuon", triggers["SOS_doublemulowMET"] + triggers["mumu_iso"] + triggers["3mu"]) )
-    DatasetsAndTriggers.append( ("MET",     triggers["SOS_highMET"] ) )
+    DatasetsAndTriggers.append( ("DoubleMuon",      triggers["SOS_doublemulowMET"] + triggers["mumu_iso"] + triggers["3mu"]) )
+    DatasetsAndTriggers.append( ("MET",             triggers["SOS_highMET"] ) )
+    DatasetsAndTriggers.append( ("SingleElectron",  triggers["SOS_eleTnP"] ) )
+    DatasetsAndTriggers.append( ("SingleMuon",      triggers["SOS_muTnP"] ) )
 # make MC
 
 print "mcSamples ",mcSamples
@@ -349,12 +358,12 @@ for pd, triggers in DatasetsAndTriggers:
         dataSamples.append(comp)
     vetoTriggers += triggers[:]
 
-selectedComponents = mcSamples ##+ dataSamples
+selectedComponents = mcSamples + dataSamples
 if getHeppyOption('selectComponents'):
     selectedComponents = byCompName(selectedComponents, getHeppyOption('selectComponents').split(","))
 autoAAA(selectedComponents, quiet=False)##not(getHeppyOption("verboseAAA",False)))
 configureSplittingFromTime(mcSamples,250 if preprocessor else 10,10)
-#configureSplittingFromTime(dataSamples,80 if preprocessor else 10,10)
+configureSplittingFromTime(dataSamples,80 if preprocessor else 10,10)
 selectedComponents, _ = mergeExtensions(selectedComponents)
 
 # create and set preprocessor if requested
