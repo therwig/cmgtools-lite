@@ -390,7 +390,7 @@ def TnPisTightLepWZ(collection):
 def TnP(year,collection):
     return ( lambda : addTnpTree(year,collection) )
 
-def susySOS_sequence_TnP(year,collection):
+def susySOS_sequence_TnP(year,collection): # TnP module should always be last
     if collection == "Muon":
         return [autoPuWeight, yearTag, xsecTag, muonJetBTagCSV, muonJetBTagDeepCSV, TnPMasses(collection), TnPisTightLepDY(collection), TnPisTightLepTT(collection), TnPisTightLepVV(collection), TnPisTightLepWZ(collection), TnP(year,collection) ]
     if collection == "Electron":
