@@ -25,10 +25,15 @@ from CMGTools.TTHAnalysis.plotter.histoWithNuisances import HistoWithNuisances, 
 if "/functions_cc.so" not in ROOT.gSystem.GetLibraries(): 
     ROOT.gROOT.ProcessLine(".L %s/src/CMGTools/TTHAnalysis/python/plotter/functions.cc+" % os.environ['CMSSW_BASE']);
 
-def scalarToVector(x):
+def scalarToVector(x,tree):
     x0 = x
     x = re.sub(r"(LepGood|Lep|JetFwd|Jet|GenTop|SV|PhoGood|TauGood|Tau|Muon|Electron)(\d)_(\w+)", lambda m : "%s_%s[%d]" % (m.group(1),m.group(3),int(m.group(2))-1), x)
     x = re.sub(r"\bmet\b", "met_pt", x)
+    while "AltBranch$" in x:
+        m = re.search(r"AltBranch\$\(\s*(\w+)\s*,\s*(\w+)\s*\)", x)
+        if not m:
+            raise RuntimeError("Error, found AltBranch$ in cut string, but it doesn't comply with the syntax this code can support. The cut is %r" % x)
+        x = x.replace(m.group(0), m.group(1) if tree.GetBranch(m.group(1)) else m.group(2))
     return x
 
 class PlotSpec:
@@ -461,7 +466,7 @@ class TreeToYield:
         else: 
             cut = self.adaptExpr(cut,cut=True)
         if self._options.doS2V:
-            cut  = scalarToVector(cut)
+            cut  = scalarToVector(cut,self._tree)
         if self._weightStringAll != "1":
             cut = "(%s)*(%s)" % (self._weightStringAll, cut)
         return cut
@@ -478,7 +483,7 @@ class TreeToYield:
             return [ histo.GetBinContent(1), histo.GetBinError(1), nev ]
         else: 
             if self._options.doS2V:
-                cut  = scalarToVector(cut)
+                cut  = scalarToVector(cut,self._tree)
             (firstEntry, maxEntries) = self._rangeToProcess(fsplit)
             npass = tree.Draw("1",self.adaptExpr(cut,cut=True),"goff", maxEntries, firstEntry);
             return [ npass, sqrt(npass), npass ]
@@ -564,8 +569,8 @@ class TreeToYield:
         cut = self.getWeightForCut('(%s)*(%s)'%(cut,perPlotCut) if perPlotCut else cut)
         expr = self.adaptExpr(expr)
         if self._options.doS2V:
-            cut  = scalarToVector(cut)
-            expr = scalarToVector(expr)
+            cut  = scalarToVector(cut,self._tree)
+            expr = scalarToVector(expr,self._tree)
         #print "DEBUG: ",self._name, self._cname, cut, expr
         (firstEntry, maxEntries) = self._rangeToProcess(fsplit)
         if ROOT.gROOT.FindObject("dummy") != None: ROOT.gROOT.FindObject("dummy").Delete()
@@ -614,7 +619,7 @@ class TreeToYield:
         if not self._isInit: self._init()
         cut = self.adaptExpr(cut,cut=True)
         if self._options.doS2V:
-            cut  = scalarToVector(cut)
+            cut  = scalarToVector(cut,self._tree)
             self._tree.vectorTree = True 
         eventLoop.beginComponent(self)
         eventLoop.loop(self._tree, getattr(self._options, 'maxEvents', -1), cut=cut)
@@ -633,7 +638,7 @@ class TreeToYield:
             if self._isdata: cut = "(%s)     *(%s)*(%s)" % (self._weightString,                    self._scaleFactor, self.adaptExpr(cut,cut=True))
             else:            cut = "(%s)*(%s)*(%s)*(%s)" % (self._weightString,self._options.lumi, self._scaleFactor, self.adaptExpr(cut,cut=True))
         else: cut = self.adaptExpr(cut,cut=True)
-        if self._options.doS2V: cut  = scalarToVector(cut)
+        if self._options.doS2V: cut  = scalarToVector(cut,self._tree)
         if self._weightStringAll != "1": cut = "(%s)*(%s)" % (self._weightStringAll, cut)
         (firstEntry, maxEntries) = self._rangeToProcess(fsplit)
         self._tree.Draw('>>elist', cut, 'entrylist', maxEntries, firstEntry)
