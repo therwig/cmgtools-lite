@@ -360,38 +360,42 @@ eventBTagWeight_16 = lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BA
 eventBTagWeight_17 = lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_94XSF_V4_B_F.csv", discrname="btagDeepB")
 eventBTagWeight_18 = lambda : BTagEventWeightFriend(csvfile=os.environ["CMSSW_BASE"]+"/src/CMGTools/TTHAnalysis/data/btag/DeepCSV_102XSF_V1.csv", discrname="btagDeepB")
 
-# TnP stuff
+
+### TnP stuff
 susySOS_TnP_cut =  ("Sum$(Muon_pt > 3.0 && fabs(Muon_eta) < 2.4 && Muon_looseId == 1) >= 2 || " +
         "Sum$(Electron_pt > 5.0 && fabs(Electron_eta) < 2.5) >= 2")
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.lepJetBTagAdder import eleJetBTagDeepCSV, muonJetBTagDeepCSV, eleJetBTagCSV, muonJetBTagCSV
 from CMGTools.TTHAnalysis.tools.nanoAOD.addTnpTree import addTnpTree
 
 def TnPMasses(collection):
-    if collection == "Muon":
-        return ttHLeptonCombMasses( [("Muon", (lambda l : abs(l.eta) < 2.4 and l.pt > 3.0 and l.looseId == 1) )], maxLeps = 4)
-    if collection == "Electron":
-        return ttHLeptonCombMasses( [("Electron", (lambda l : abs(l.eta) < 2.5 and l.pt > 5.0) )], maxLeps = 4)
+    if collection == "Muon": return ttHLeptonCombMasses( [("Muon", (lambda l : abs(l.eta) < 2.4 and l.pt > 3.0 and l.looseId == 1) )], maxLeps = 4)
+    if collection == "Electron": return ttHLeptonCombMasses( [("Electron", (lambda l : abs(l.eta) < 2.5 and l.pt > 5.0) )], maxLeps = 4)
 def TnPisTightLepDY(collection):
-    return ( lambda : ObjTagger('isTightLepDY', collection,
-        [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and
-            ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) ) ]) )
+    if collection == "Muon": return ( lambda : ObjTagger('isTightLepDY', "Muon", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and muonSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) ) ]) )
+    if collection == "Electron": return ( lambda : ObjTagger('isTightLepDY', "Electron", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and electronSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) ) ]) )
 def TnPisTightLepTT(collection):
-    return ( lambda : ObjTagger('isTightLepTT', collection,
-        [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and
-            ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Muon": return ( lambda : ObjTagger('isTightLepTT', "Muon", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and muonSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Electron": return ( lambda : ObjTagger('isTightLepTT', "Electron", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and electronSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
 def TnPisTightLepVV(collection):
-    return ( lambda : ObjTagger('isTightLepVV', collection,
-        [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and
-            ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Muon": return ( lambda : ObjTagger('isTightLepVV', "Muon", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and muonSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Electron": return ( lambda : ObjTagger('isTightLepVV', "Electron", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and electronSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
 def TnPisTightLepWZ(collection):
-    return ( lambda : ObjTagger('isTightLepWZ', collection,
-        [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and
-            ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Muon": return ( lambda : ObjTagger('isTightLepWZ', "Muon", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and muonSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
+    if collection == "Electron": return ( lambda : ObjTagger('isTightLepWZ', "Electron", [ lambda lep,year : clean_and_FO_selection_SOS(lep,year) and electronSelection(lep) and
+        ( (abs(lep.pdgId)==13 or tightEleID(lep, year) ) and lep.pfRelIso03_all<0.5 and ( (lep.pfRelIso03_all*lep.pt)<5. or lep.pfRelIso03_all<0.1 ) and abs(lep.ip3d)<0.01 and lep.sip3d<2 ) ]) )
 def TnP(year,collection):
     return ( lambda : addTnpTree(year,collection) )
 
 def susySOS_sequence_TnP(year,collection): # TnP module should always be last
     if collection == "Muon":
-        return [autoPuWeight, yearTag, xsecTag, muonJetBTagCSV, muonJetBTagDeepCSV, TnPMasses(collection), TnPisTightLepDY(collection), TnPisTightLepTT(collection), TnPisTightLepVV(collection), TnPisTightLepWZ(collection), TnP(year,collection) ]
+        return [autoPuWeight, yearTag, xsecTag, muonJetBTagCSV, muonJetBTagDeepCSV, TnPMasses(collection), isCleanMu, isTightSOSMu, TnPisTightLepDY(collection), TnPisTightLepTT(collection), TnPisTightLepVV(collection), TnPisTightLepWZ(collection), TnP(year,collection) ]
     if collection == "Electron":
-        return [autoPuWeight, yearTag, xsecTag, eleJetBTagCSV, eleJetBTagDeepCSV, TnPMasses(collection), TnPisTightLepDY(collection), TnPisTightLepTT(collection), TnPisTightLepVV(collection), TnPisTightLepWZ(collection), TnP(year,collection) ]
+        return [autoPuWeight, yearTag, xsecTag, eleJetBTagCSV, eleJetBTagDeepCSV, TnPMasses(collection), isVLFOEle, isTightEle, isCleanEle, isTightSOSEle, TnPisTightLepDY(collection), TnPisTightLepTT(collection), TnPisTightLepVV(collection), TnPisTightLepWZ(collection), TnP(year,collection) ]
