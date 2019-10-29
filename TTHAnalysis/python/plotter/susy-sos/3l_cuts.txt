@@ -1,9 +1,7 @@
 ##### Always applied cuts
 alwaystrue	: 1
 
-eventFilters_16	: $DATA{EventFilters16} $MC{1}	; Disable=True
-eventFilters_17	: $DATA{EventFilters17} $MC{1}	; Disable=True
-eventFilters_18	: $DATA{EventFilters18} $MC{1}	; Disable=True
+eventFilters	: $DATA{EventFilters} $MC{1}	; Disable=True
 
 dilep		: nLepGood == 3
 sublepPt	: (fabs(LepGood2_pdgId)==13 && LepGood2_pt > 3.5) || (fabs(LepGood2_pdgId)==11 && LepGood2_pt > 5)
@@ -17,22 +15,14 @@ upsilonVeto	: !( fabs(LepGood1_pdgId) == fabs(LepGood2_pdgId) && LepGood1_pdgId*
 ##### Triggers and Binning # To be discussed
 ### Min MET
 met75		: MET_pt > 75 && MET_pt < 125	; Disable= True
-met75_trig_CR_16	: HLT_MuMu16	; Disable=True
-met75_trig_CR_17	: HLT_MuMu	; Disable=True
-met75_trig_CR_18	: HLT_MuMu	; Disable=True
+met75_trig_CR		: (year==2016 && HLT_MuMu16) || ( (year==2017 || year==2018) && HLT_MuMu )	; Disable=True
 ### Low MET
 met125		: MET_pt > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 125 && metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) < 200	; Disable=True
-met125_trig_16	: HLT_MuMuMET16	; Disable=True
-met125_trig_17	: HLT_MuMuMET	; Disable=True
-met125_trig_18	: HLT_MuMuMET	; Disable=True
-met125_trig_CR_16	: HLT_MuMu16	; Disable=True
-met125_trig_CR_17	: HLT_MuMu	; Disable=True
-met125_trig_CR_18	: HLT_MuMu	; Disable=True
+met125_trig		: (year==2016 && HLT_MuMuMET16) || ( (year==2017 || year==2018) && HLT_MuMuMET )	; Disable=True
+met125_trig_CR	: (year==2016 && HLT_MuMu16) || ( (year==2017 || year==2018) && HLT_MuMu )	; Disable=True
 ### Med MET
 met200		: metmmm_pt(LepGood1_pt, LepGood1_phi, LepGood2_pt, LepGood2_phi,LepGood3_pt,LepGood3_phi, MET_pt, MET_phi, lepton_Id_selection(LepGood1_pdgId, LepGood2_pdgId, LepGood3_pdgId)) > 200	; Disable=True
-met200_trig_16	: HLT_HighMET16	; Disable=True
-met200_trig_17	: HLT_HighMET	; Disable=True
-met200_trig_18	: HLT_HighMET	; Disable=True
+met200_trig	: (year==2016 && HLT_HighMET16) || ( (year==2017 || year==2018) && HLT_HighMET )	; Disable=True
 
 
 ##### SR (enabled by default but likely to be inverted cuts)

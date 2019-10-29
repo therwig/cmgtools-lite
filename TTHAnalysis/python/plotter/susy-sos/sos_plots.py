@@ -149,9 +149,9 @@ def setwide(x):
     x2 = x2.replace('--legendWidth 0.35','--legendWidth 0.20')
     return x2
 
-def binYearChoice(x,torun,YEAR):
+def binChoice(x,torun):
     metBin = ''
-    x2 = add(x,'-E ^eventFilters_'+YEAR[-2:]+'$ ')
+    x2 = add(x,'-E ^eventFilters$ ')
     if '_min' in torun:
         metBin = 'met75'
     elif '_low' in torun:
@@ -162,7 +162,7 @@ def binYearChoice(x,torun,YEAR):
     elif '_high' in torun:
         metBin = 'met250'
         x2 = add(x2,'-X ^mm$ ')
-    if metBin != '': x2 = add(x2,'-E ^'+metBin+'$ -E ^'+metBin+'_trig_'+YEAR[-2:]+'$ ')
+    if metBin != '': x2 = add(x2,'-E ^'+metBin+'$ -E ^'+metBin+'_trig$ ')
     else: print "\n--- NO TRIGGER APPLIED! ---\n"
     return x2
 
@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
     if '2los_' in torun:
         x = base('2los')
-        x = binYearChoice(x,torun,YEAR)
+        x = binChoice(x,torun)
     
         if 'sr' in torun:
             if '_col' in torun:
@@ -234,7 +234,7 @@ if __name__ == '__main__':
 
     elif '3l_' in torun:
         x = base('3l')
-        x = binYearChoice(x,torun,YEAR)
+        x = binChoice(x,torun)
     
         if 'appl' in torun:
             x = add(x,"-X ^threeTight$ ")
