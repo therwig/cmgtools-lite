@@ -50,6 +50,8 @@ class mllReweight( Module ):
             self.wrappedOutputTree.branch(self.label+"_mll",'F')
             self.wrappedOutputTree.branch(self.label+"_mllRel",'F')
             self.wrappedOutputTree.branch(self.label+"_dm",'F')
+            self.wrappedOutputTree.branch(self.label+"_mN1",'F')
+            self.wrappedOutputTree.branch(self.label+"_mN2",'F')
             self.wrappedOutputTree.branch(self.label+"_nlep",'F')
 
     def GetNormFunction(self, name, formula, mN1, mN2):
@@ -81,7 +83,7 @@ class mllReweight( Module ):
 
     def GetWeights(self, mll, mN1, mN2):
         # for out of bounds mll, or failures in computation
-        if mN2-mN1 > self.max_dm or mll<-1+1e5:
+        if mN2-mN1 > self.max_dm or mll<-1+1e-5:
             return (1.,1.)
         # correct unphysical configurations due to imperfect precision
         if mll < 0: mll=1e-5
@@ -138,6 +140,8 @@ class mllReweight( Module ):
             self.wrappedOutputTree.fillBranch(self.label+"_mll", mll)
             self.wrappedOutputTree.fillBranch(self.label+"_mllRel", mll/(mN2-mN1))
             self.wrappedOutputTree.fillBranch(self.label+"_dm", mN2-mN1)
+            self.wrappedOutputTree.fillBranch(self.label+"_mN1", mN1)
+            self.wrappedOutputTree.fillBranch(self.label+"_mN2", mN2)
         wPos, wNeg = self.GetWeights(mll, mN1, mN2)
         self.wrappedOutputTree.fillBranch(self.label+"_pos", wPos)
         self.wrappedOutputTree.fillBranch(self.label+"_neg", wNeg)
