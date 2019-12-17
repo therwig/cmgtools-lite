@@ -35,6 +35,12 @@ lepSkim = ttHPrescalingLepSkimmer(0, ##do not apply prescale
                                   jetSel = lambda j : j.pt > 25 and abs(j.eta) < 2.4  and j.jetId > 0, 
                                   minJets = 0, minMET = 0)
 
+from CMGTools.TTHAnalysis.tools.nanoAOD.mllReweight import mllReweight
+from CMGTools.TTHAnalysis.tools.nanoAOD.truthAna import truthAna
+mymll = lambda : mllReweight("mystuff")
+mytruthana = lambda : truthAna("mystuff")
+#mymll = lambda : mllReweight("mystuff")
+
 from PhysicsTools.NanoAODTools.postprocessing.modules.common.collectionMerger import collectionMerger
 lepMerge = collectionMerger(input = ["Electron","Muon"], 
                             output = "LepGood", 

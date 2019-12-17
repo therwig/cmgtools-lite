@@ -1196,6 +1196,7 @@ def addPlotMakerOptions(parser, addAlsoMCAnalysis=True):
     parser.add_option("--cmsprel", dest="cmsprel", type="string", default="Preliminary", help="Additional text (Simulation, Preliminary, Internal)")
     parser.add_option("--cmssqrtS", dest="cmssqrtS", type="string", default="13 TeV", help="Sqrt of s to be written in the official CMS text.")
     parser.add_option("--printBin", dest="printBinning", type="string", default=None, help="Write 'Events/xx' instead of 'Events' on the y axis")
+    parser.add_option("--lpc", dest="lpc", action="store_true", default=False, help="Enable options for running off eos space at FNAL LPC")
 
 if __name__ == "__main__":
     from optparse import OptionParser

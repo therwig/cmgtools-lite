@@ -210,6 +210,8 @@ class MCAnalysis:
             genSumWeightName = extra["genSumWeightName"] if "genSumWeightName" in extra else "genEventSumw"
             is_w = -1
             pname0 = pname
+            redirect=None
+            if options.lpc: redirect = "root://cmseos.fnal.gov/"
             for cname in cnames:
                 skipMe = False
                 for p0 in options.filesToExclude:
@@ -227,7 +229,8 @@ class MCAnalysis:
                     if os.path.exists(treepath+"/"+cname) or (treename == "NanoAOD" and os.path.isfile(treepath+"/"+cname+".root")):
                         basepath = treepath
                         break
-                if not basepath:
+                if not basepath and not redirect:
+                    # files on eos (read with redirector) cannot be checked in this manner
                     raise RuntimeError("%s -- ERROR: %s process not found in paths (%s)" % (__name__, cname, repr(options.path)))
 
                 rootfile = "%s/%s/%s/%s_tree.root" % (basepath, cname, treename, treename)
@@ -245,7 +248,7 @@ class MCAnalysis:
                     # Heppy calls the tree just 'tree.root'
                     rootfile = "%s/%s/%s/tree.root" % (basepath, cname, treename)
                     rootfile = open(rootfile+".url","r").readline().strip()
-                pckfile = basepath+"/%s/skimAnalyzerCount/SkimReport.pck" % cname
+                pckfile = "%s/%s/skimAnalyzerCount/SkimReport.pck" % (basepath,cname)
                 if treename == "NanoAOD":
                     objname = "Events"
                     pckfile = None
@@ -256,6 +259,11 @@ class MCAnalysis:
                         rootfiles = [ rootfile ]
                     elif os.path.isfile(rootfile+".root"):
                         rootfiles = [ rootfile+".root" ]
+                    elif redirect:
+                        # check here for the root file on EOS
+                        rootfile = "%s/%s/%s" % (redirect, options.remotePath, cname)
+                        if ROOT.TFile.Open(rootfile+".root") != None:
+                            rootfiles = [ rootfile ]
                     else:
                         raise RuntimeError("%s -- ERROR: cannot find NanoAOD file for %s process in paths (%s)" % (__name__, cname, repr(options.path)))
                 else:
