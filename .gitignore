@@ -12,3 +12,5 @@ __init__.py
 *.pcm
 LSFJOB*/
 slurm-*.out
+ch_outdir*
+ch_*test*
