@@ -9,8 +9,9 @@ from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 _rootLeafType2rootBranchType = { 'UChar_t':'b', 'Char_t':'B', 'UInt_t':'i', 'Int_t':'I', 'Float_t':'F', 'Double_t':'D', 'ULong64_t':'l', 'Long64_t':'L', 'Bool_t':'O' }
 
 class addTnpTree(Module):
-    def __init__(self, year, flavor):
+    def __init__(self, year, flavor, doJPsi=False):
         self.flavor = flavor
+        self.doJPsi = doJPsi
         if self.flavor == "Electron":
             self.probeSel = lambda x : x.pt > 5 and abs(x.eta) < 2.5
             if year == 2016:
@@ -27,7 +28,11 @@ class addTnpTree(Module):
             self.tagSel = lambda x : x.pt > 29 and x.tightId and abs(x.eta) < 2.4
             self.kMaxMass = 140
             self.kMinMass = 60
-        
+
+        if self.doJPsi:
+            self.kMaxMass = 12.
+            self.kMinMass = 1.
+                
         self.year = year
         self.i = 0
 
@@ -87,15 +92,19 @@ class addTnpTree(Module):
         #### Construct the trigger object collection containing electrons triggering a single iso electron trigger
         selTrigObj = []
         for tr in trigObj:
-            if self.flavor == "Electron":
-                if not abs(tr.id) == 11: continue
-                if not (tr.filterBits & 2): continue
-            if self.flavor == "Muon":
-                if not abs(tr.id) == 13: continue
-                if self.year == 2016:
-                    if not ((tr.filterBits & 2) or (tr.filterBits & 8)): continue
-                else:
-                    if not ((tr.filterBits & 2) and (tr.filterBits & 8)): continue
+            if not self.doJPsi:
+                if self.flavor == "Electron":
+                    if not abs(tr.id) == 11: continue
+                    if not (tr.filterBits & 2): continue
+                if self.flavor == "Muon":
+                    if not abs(tr.id) == 13: continue
+                    if self.year == 2016:
+                        if not ((tr.filterBits & 2) or (tr.filterBits & 8)): continue
+                    else:
+                        if not ((tr.filterBits & 2) and (tr.filterBits & 8)): continue
+            else: #jpsi
+                if self.flavor == "Muon":
+                    if not abs(tr.id) == 13: continue               
             selTrigObj.append(tr)
 
         # Calculate event-per-event variables
@@ -114,7 +123,9 @@ class addTnpTree(Module):
                 passTrigger = event.HLT_IsoMu27
             elif self.year == 2018:
                 passTrigger = event.HLT_IsoMu24
-            
+
+        if self.doJPsi:
+                passTrigger = event.HLT_Mu8
 
         # Compute HT and MET
         ht = 0; met = event.METFixEE2017_pt if self.year == 17 else event.MET_pt
