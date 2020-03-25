@@ -12,19 +12,21 @@ year = int(getHeppyOption("year", "2018"))
 analysis = getHeppyOption("analysis", "main")
 preprocessor = getHeppyOption("nanoPreProcessor")
 
+ch_test=True
 if getHeppyOption("nanoPreProcessor"):
-    if year == 2018:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18MiniAOD import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2018_MiniAOD import samples as allData
-        from CMGTools.RootTools.samples.triggers_13TeV_DATA2018 import all_triggers as triggers
-    elif year == 2017:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIIFall17MiniAOD import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2017 import dataSamples_31Mar2018 as allData
-        from CMGTools.RootTools.samples.triggers_13TeV_DATA2017 import all_triggers as triggers
-    elif year == 2016:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16MiniAODv3 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allData
-        from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
+    if not ch_test:
+        if year == 2018:
+            from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18MiniAOD import samples as mcSamples_
+            from CMGTools.RootTools.samples.samples_13TeV_DATA2018_MiniAOD import samples as allData
+            from CMGTools.RootTools.samples.triggers_13TeV_DATA2018 import all_triggers as triggers
+        elif year == 2017:
+            from CMGTools.RootTools.samples.samples_13TeV_RunIIFall17MiniAOD import samples as mcSamples_
+            from CMGTools.RootTools.samples.samples_13TeV_DATA2017 import dataSamples_31Mar2018 as allData
+            from CMGTools.RootTools.samples.triggers_13TeV_DATA2017 import all_triggers as triggers
+        elif year == 2016:
+            from CMGTools.RootTools.samples.samples_13TeV_RunIISummer16MiniAODv3 import samples as mcSamples_
+            from CMGTools.RootTools.samples.samples_13TeV_DATA2016 import dataSamples_17Jul2018 as allData
+            from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
 else:
     if year == 2018:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18NanoAODv5 import samples as mcSamples_
@@ -39,7 +41,7 @@ else:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_1June2019 as allData
         from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
 
-
+mcSamples=[]
 DatasetsAndTriggers = []
 if year == 2018:
     if analysis == "main":
@@ -218,7 +220,7 @@ elif year == 2017:
     DatasetsAndTriggers.append( ("SingleElectron",  triggers["SOS_eleTnP"] ) )
     DatasetsAndTriggers.append( ("SingleMuon",      triggers["SOS_muTnP"] ) )
 
-elif year == 2016:
+elif year == 2016 and not ch_test:
     mcSamples = byCompName(mcSamples_, [
         "DYJetsToLL_M50_LO", # for Tag and Probe studies
         "DYJetsToLL_M10to50_LO$",
@@ -372,7 +374,7 @@ if getHeppyOption("nanoPreProcessor"):
     preproc_cfg = {2016: ("mc94X2016","data94X2016"),
                    2017: ("mc94Xv2","data94Xv2"),
                    2018: ("mc102X","data102X_ABC","data102X_D")}
-    preproc_cmsswArea = "/afs/cern.ch/user/v/vtavolar/work/SusySOSSW_2_clean/nanoAOD/CMSSW_10_2_15" #MODIFY ACCORDINGLY
+    preproc_cmsswArea = "/afs/cern.ch/user/t/therwig/workspace/sos/CMSSW_10_2_16_UL" #MODIFY ACCORDINGLY
     preproc_mc = nanoAODPreprocessor(cfg='%s/src/PhysicsTools/NanoAOD/test/%s_NANO.py'%(preproc_cmsswArea,preproc_cfg[year][0]),cmsswArea=preproc_cmsswArea,keepOutput=True)
     if year==2018:
         preproc_data_ABC = nanoAODPreprocessor(cfg='%s/src/PhysicsTools/NanoAOD/test/%s_NANO.py'%(preproc_cmsswArea,preproc_cfg[year][1]),cmsswArea=preproc_cmsswArea,keepOutput=True, injectTriggerFilter=True, injectJSON=True)
@@ -451,6 +453,11 @@ POSTPROCESSOR = PostProcessor(None, [], modules = modules,
         cut = cut, prefetch = True, longTermCache = True,
         branchsel = branchsel_in, outputbranchsel = branchsel_out, compression = compression)
 
+if ch_test:
+    TChiWZ = kreator.makeMCComponent("TChiWZ","/SMS-TChiWZ_ZToLL_mZMin-0p1_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISummer16MiniAODv3-PUMoriond17_GridpackScan_94X_mcRun2_asymptotic_v3-v1/MINIAODSIM","CMS",".*root",1.)
+    selectedComponents = [TChiWZ]
+
+
 test = getHeppyOption("test")
 if test == "94X-MC":
     TTLep_pow = kreator.makeMCComponent("TTLep_pow", "/TTTo2L2Nu_mtop166p5_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM", "CMS", ".*root", 831.76*((3*0.108)**2) )
@@ -474,9 +481,3 @@ elif test == "102X-MC":
     selectedComponents = [TTLep_pow]
 elif test in ('2','3','3s'):
     doTestN(test, selectedComponents)
-# elif test == "softLeptons":
-
-print 'yoo'
-selectedComponents = [kreator.makeMCComponent("JpsiToMuMu_JpsiPt8", "/JpsiToMuMu_JpsiPt8_TuneCP5_13TeV-pythia8/RunIIAutumn18NanoAODv5-Nano1June2019_102X_upgrade2018_realistic_v19-v1/NANOAODSIM", "CMS", ".*root", 1000)]
-print 'yoo2'
-#selectedComponents = [kreator.makeMCComponent("JpsiToMuMu_JpsiPt8", "/JpsiToMuMu_JpsiPt8_TuneCP5_13TeV-pythia8/RunIIAutumn18NanoAODv5-Nano1June2019_102X_upgrade2018_realistic_v19-v1/NANOAODSIM", "CMS", ".*root", 1000)]
