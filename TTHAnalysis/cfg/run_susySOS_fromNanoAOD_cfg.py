@@ -27,8 +27,8 @@ if getHeppyOption("nanoPreProcessor"):
         from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
 else:
     if year == 2018:
-        from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18NanoAODv5 import samples as mcSamples_
-        from CMGTools.RootTools.samples.samples_13TeV_DATA2018_NanoAOD import dataSamples_1June2019 as allData
+        #from CMGTools.RootTools.samples.samples_13TeV_RunIIAutumn18NanoAODv5 import samples as mcSamples_
+        #from CMGTools.RootTools.samples.samples_13TeV_DATA2018_NanoAOD import dataSamples_1June2019 as allData
         from CMGTools.RootTools.samples.triggers_13TeV_DATA2018 import all_triggers as triggers
     elif year == 2017:
         from CMGTools.RootTools.samples.samples_13TeV_RunIIFall17NanoAODv5 import samples as mcSamples_
@@ -39,6 +39,10 @@ else:
         from CMGTools.RootTools.samples.samples_13TeV_DATA2016_NanoAOD import dataSamples_1June2019 as allData
         from CMGTools.RootTools.samples.triggers_13TeV_DATA2016 import all_triggers as triggers
 
+mcSamples_ = [kreator.makeMCComponent("DYJetsToLL_M50_LO", "/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/RunIIAutumn18NanoAODv5-Nano1June2019_102X_upgrade2018_realistic_v19-v1/NANOAODSIM", "CMS", ".*root", 1921.8*3)]
+mcSamples=mcSamples_
+mcSamples[0].files=['/uscms_data/d1/therwig/local_data/3C6B053B-C36F-BA4B-8A44-1BC2C291DC8D.root']
+allData=[]
 
 DatasetsAndTriggers = []
 if year == 2018:
@@ -343,7 +347,7 @@ elif year == 2016:
     DatasetsAndTriggers.append( ("SingleMuon",      triggers["SOS_muTnP"] ) )
 # make MC
 
-print "mcSamples ",mcSamples
+#print "mcSamples ",mcSamples
 
 mcTriggers = sum((trigs for (pd,trigs) in DatasetsAndTriggers), [])
 for comp in mcSamples:
@@ -361,7 +365,7 @@ for pd, triggers in DatasetsAndTriggers:
 selectedComponents = mcSamples + dataSamples
 if getHeppyOption('selectComponents'):
     selectedComponents = byCompName(selectedComponents, getHeppyOption('selectComponents').split(","))
-autoAAA(selectedComponents, quiet=False)##not(getHeppyOption("verboseAAA",False)))
+#autoAAA(selectedComponents, quiet=False)##not(getHeppyOption("verboseAAA",False)))
 configureSplittingFromTime(mcSamples,250 if preprocessor else 10,10)
 configureSplittingFromTime(dataSamples,80 if preprocessor else 10,10)
 selectedComponents, _ = mergeExtensions(selectedComponents)
